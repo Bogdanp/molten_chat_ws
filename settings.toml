@@ -1,16 +1,19 @@
 [common]
 database_engine_dsn = "postgres://postgres:postgres@127.0.0.1:5432/chat"
 
+[common.passwords]
+schemes = ["sha256_crypt"]
+
+[common.redis]
+url = "redis://127.0.0.1:6379"
+
+[common.sessions]
+signing_key = "supersecret"
+
 [common.whitenoise]
 root = "static"
 prefix = "/static"
 autorefresh = true
-
-[common.passwords]
-schemes = ["sha256_crypt"]
-
-[common.sessions]
-signing_key = "supersecret"
 
 
 [test]

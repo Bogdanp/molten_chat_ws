@@ -5,6 +5,7 @@ jinja2
 molten
 passlib
 psycopg2-binary
+redis
 sqlalchemy
 toml
 whitenoise[brotli]

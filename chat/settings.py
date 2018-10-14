@@ -9,6 +9,7 @@ SETTINGS = TOMLSettings.from_path(path_to("settings.toml"), ENVIRONMENT)
 
 # TODO: Janky af!!
 SETTINGS["database_engine_dsn"] = os.getenv("DATABASE_URL", SETTINGS["database_engine_dsn"])
+SETTINGS["redis"]["url"] = os.getenv("REDIS_URL", SETTINGS["redis"]["url"])
 SETTINGS["sessions"]["signing_key"] = os.getenv("SIGNING_KEY", "")
 
 

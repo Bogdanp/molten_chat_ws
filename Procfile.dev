@@ -1,2 +1,3 @@
 web: PYTHONUNBUFFERED=x gunicorn app:app
 assets: npm start
+redis: redis-server

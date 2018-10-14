@@ -1,4 +1,5 @@
 .cache
 __pycache__
+dump.rdb
 node_modules
 static

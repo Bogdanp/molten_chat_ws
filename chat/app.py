@@ -12,10 +12,11 @@ from whitenoise import WhiteNoise
 from . import settings
 from .common import path_to
 from .components.accounts import Account, AccountManagerComponent, CurrentAccountComponent
+from .components.chatrooms import ChatroomManagerComponent
 from .components.passwords import PasswordHasherComponent
+from .components.redis import RedisComponent
 from .handlers import accounts, chat, sessions
 from .logging import setup_logging
-from .models import ManagerComponent
 
 
 def index(account: Optional[Account], templates: Templates):
@@ -53,8 +54,10 @@ def setup_app():
     app = App(
         components=[
             AccountManagerComponent(),
+            ChatroomManagerComponent(),
             CurrentAccountComponent(),
             PasswordHasherComponent(),
+            RedisComponent(),
             SQLAlchemyEngineComponent(),
             SQLAlchemySessionComponent(),
             SessionComponent(cookie_store),
