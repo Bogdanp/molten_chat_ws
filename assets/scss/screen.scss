@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, .content {
+  height: 100%;
+}
+
+body {
+  background: #2f3136;
+  color: #fff;
+  font: 62.5%/1.4 Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+}
+
+.label {
+  display: block;
+  padding: 8px 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.input {
+  width: 100%;
+  margin: 6px 0;
+  padding: 6px;
+  display: block;
+  background: #434549;
+  border: 2px solid #636569;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 1rem;
+
+  &:focus {
+    border: 2px solid #6e8bdd;
+    outline: none;
+  }
+}
+
+.section {
+  background: #37393e;
+  border: 1px solid #414348;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+
+  &__title {
+    border-bottom: 1px solid #414348;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  &__title,
+  &__content {
+    padding: 12px;
+  }
+
+  &__content--no-padding {
+    padding: 0;
+  }
+
+  &--solo {
+    margin: 64px auto;
+    width: 380px;
+  }
+
+  &--rounded {
+    border-radius: 2px;
+  }
+}
+
+.button {
+  background: #FFF;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  &--primary {
+    background: #6e8bdd;
+    color: #fff;
+  }
+
+  &--wide {
+    width: 100%;
+  }
+}
+
+.chat {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 280px 1fr 280px;
+
+  &__area {
+    display: grid;
+    grid-template-rows: 1fr 68px;
+  }
+}
+
+.room-messages {
+  list-style-type: none;
+
+  &__message {
+    color: #fff;
+    font-size: 1rem;
+    padding: 12px;
+    border-bottom: 1px solid #414348;
+
+    &--status {
+      opacity: 0.5;
+    }
+  }
+}
+
+.room-members {
+  list-style-type: none;
+
+  &__member {
+    color: #fff;
+    font-size: 1rem;
+    padding: 6px;
+    border-bottom: 1px solid #414348;
+  }
+}

@@ -1,0 +1,43 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <div class="chat">
+    <div class="section">
+      <h1 class="section__title">Rooms</h1>
+      <div class="section__content">
+        <ul id="rooms"></ul>
+      </div>
+    </div>
+    <div class="chat__area">
+      <div class="section">
+        <h1 id="room-title" class="section__title">#general</h1>
+        <div id="room-content" class="section__content section__content--no-padding">
+          <ul id="room-messages" class="room-messages">
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section__content">
+          <input id="message" class="input" type="text" class="input">
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h1 class="section__title">Members</h1>
+      <div class="section__content section__content--no-padding">
+        <ul id="room-members" class="room-members">
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="/static/js/chat.js"></script>
+  <script>
+    const messagingController = new MessagingController($("#room-messages"));
+    const membersController = new MembersController($("#room-members"));
+    const chatController = new ChatController(messagingController, membersController);
+    const messageBarController = new MessageBarController($("#message"), chatController);
+  </script>
+{% endblock %}

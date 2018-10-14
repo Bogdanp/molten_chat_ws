@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  <div class="section section--rounded section--solo">
+    <h1 class="section__title">Log in</h1>
+    <div class="section__content">
+      <form id="register-form" class="form">
+        <label class="label">Username <input type="text" name="username" class="input"></label>
+        <label class="label">Password <input type="password" name="password" class="input"></label>
+        <button class="button button--primary button--wide" type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="/static/js/register.js"></script>
+  <script>
+    const controller = new RegisterController($("#register-form"));
+  </script>
+{% endblock %}

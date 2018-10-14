@@ -1,0 +1,10 @@
+alembic
+gevent
+gunicorn
+jinja2
+molten
+passlib
+psycopg2-binary
+sqlalchemy
+toml
+whitenoise[brotli]

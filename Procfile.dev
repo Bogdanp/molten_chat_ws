@@ -1,0 +1,2 @@
+web: PYTHONUNBUFFERED=x gunicorn app:app
+assets: npm start
