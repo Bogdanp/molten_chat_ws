@@ -39,5 +39,14 @@
     const membersController = new MembersController($("#room-members"));
     const chatController = new ChatController(messagingController, membersController);
     const messageBarController = new MessageBarController($("#message"), chatController);
+
+    const handleResize = function(e) {
+      $("#room-messages").height(
+        $(window).height() - 130
+      );
+    };
+
+    handleResize();
+    $(window).on("resize", handleResize);
   </script>
 {% endblock %}

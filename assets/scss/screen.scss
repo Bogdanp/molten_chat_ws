@@ -112,6 +112,7 @@ a {
 
 .room-messages {
   list-style-type: none;
+  overflow: scroll;
 
   &__message {
     color: #fff;

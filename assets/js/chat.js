@@ -77,9 +77,7 @@ class ChatController {
     this.messagingController.addStatusMessage("You have been disconnected.");
   }
 
-  onSocketError() {
-    this.messagingController.addStatusMessage("You have been disconnected.");
-  }
+  onSocketError() {}
 
   onSocketMessage(message) {
     const data = JSON.parse(message.data);
@@ -102,9 +100,7 @@ class ChatController {
     usernames.forEach(username => this.membersController.addMember(username));
   }
 
-  onPongEvent() {
-    console.log("PONG");
-  }
+  onPongEvent() {}
 
   onBroadcastEvent({ username, message }) {
     this.messagingController.addMessage(username, message);
@@ -124,6 +120,7 @@ class MessagingController {
        </li>`
     );
     this.$messages.append($el);
+    this.scrollToBottom();
   }
 
   addStatusMessage(message) {
@@ -133,6 +130,14 @@ class MessagingController {
        </li>`
     );
     this.$messages.append($el);
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    this.$messages.animate(
+      { scrollTop: this.$messages.prop("scrollHeight") },
+      500
+    );
   }
 }
 
