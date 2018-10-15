@@ -9,8 +9,8 @@ from ..components.accounts import AccountManager, UsernameTaken
 @schema
 class AccountData:
     id: Optional[int] = field(response_only=True)
-    username: str
-    password: str = field(request_only=True)
+    username: str = field(min_length=6)
+    password: str = field(min_length=6, request_only=True)
 
 
 def create_account(account_data: AccountData, account_manager: AccountManager) -> AccountData:

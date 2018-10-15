@@ -36,10 +36,7 @@ def register(templates: Templates):
 def setup_app():
     setup_logging()
 
-    cookie_store = CookieStore(
-        settings.strict_get("sessions.signing_key").encode(),
-        cookie_path="/",
-    )
+    cookie_store = CookieStore(**settings.strict_get("sessions"))
 
     get_schema = OpenAPIHandler(
         Metadata(

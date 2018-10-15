@@ -9,6 +9,7 @@ url = "redis://127.0.0.1:6379"
 
 [common.sessions]
 signing_key = "supersecret"
+cookie_path = "/"
 
 [common.whitenoise]
 root = "static"
@@ -28,6 +29,7 @@ url = "$REDIS_URL"
 
 [prod.sessions]
 signing_key = "$SIGNING_KEY"
+cookie_path = "/"
 
 [prod.whitenoise]
 root = "static"
