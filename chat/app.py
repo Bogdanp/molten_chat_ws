@@ -51,15 +51,12 @@ def setup_app():
     app = App(
         components=[
             AccountManagerComponent(),
-            # Redis and Registry must come before handler and listener
-            # due to a bug in the DI.  Singleton dependencies of other
-            # singletons are not cached properly.
-            RedisComponent(),
-            ChatroomRegistryComponent(),
             ChatHandlerFactoryComponent(),
             ChatroomListenerComponent(),
+            ChatroomRegistryComponent(),
             CurrentAccountComponent(),
             PasswordHasherComponent(),
+            RedisComponent(),
             SQLAlchemyEngineComponent(),
             SQLAlchemySessionComponent(),
             SessionComponent(cookie_store),
