@@ -25,6 +25,15 @@ class ChatController {
     this.messagingController = messagingController;
     this.membersController = membersController;
 
+    this.connect();
+    this.pingInterval = window.setInterval(this.sendPing.bind(this), 10000);
+    this.reconnectInterval = window.setInterval(
+      this.reconnect.bind(this),
+      3000
+    );
+  }
+
+  connect() {
     const URI = window.location.origin.replace("http", "ws") + "/v1/chat";
     this.sock = new WebSocket(URI);
     this.sock.onopen = this.onSocketOpened.bind(this);
@@ -33,10 +42,25 @@ class ChatController {
     this.sock.onmessage = this.onSocketMessage.bind(this);
   }
 
+  reconnect() {
+    if (this.sock.readyState === 3) {
+      this.messagingController.addStatusMessage("Reconnecting...");
+      this.connect();
+    }
+  }
+
   sendMessage(message) {
     this.sock.send(
       JsonMessage({ type: "message", room_name: this.currentRoom, message })
     );
+  }
+
+  sendPing() {
+    if (this.sock.readyState === 1) {
+      this.sock.send(
+        JsonMessage({ type: "ping", room_name: this.currentRoom })
+      );
+    }
   }
 
   onRoomChanged(roomName) {
@@ -46,12 +70,15 @@ class ChatController {
 
   onSocketOpened() {
     this.onRoomChanged("general");
+    this.messagingController.addStatusMessage("You are connected.");
   }
 
-  onSocketClosed() {}
+  onSocketClosed() {
+    this.messagingController.addStatusMessage("You have been disconnected.");
+  }
 
-  onSocketError(err) {
-    throw err;
+  onSocketError() {
+    this.messagingController.addStatusMessage("You have been disconnected.");
   }
 
   onSocketMessage(message) {
@@ -71,8 +98,12 @@ class ChatController {
     this.membersController.removeMember(username);
   }
 
-  onPresentEvent({ members }) {
-    members.forEach(member => this.membersController.addMember(member));
+  onPresenceEvent({ usernames }) {
+    usernames.forEach(username => this.membersController.addMember(username));
+  }
+
+  onPongEvent() {
+    console.log("PONG");
   }
 
   onBroadcastEvent({ username, message }) {

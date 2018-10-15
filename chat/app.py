@@ -12,7 +12,7 @@ from whitenoise import WhiteNoise
 from . import settings
 from .common import path_to
 from .components.accounts import Account, AccountManagerComponent, CurrentAccountComponent
-from .components.chatrooms import ChatroomManagerComponent
+from .components.chatrooms import ChatHandlerFactoryComponent, ChatroomListenerComponent, ChatroomRegistryComponent
 from .components.passwords import PasswordHasherComponent
 from .components.redis import RedisComponent
 from .handlers import accounts, chat, sessions
@@ -51,10 +51,15 @@ def setup_app():
     app = App(
         components=[
             AccountManagerComponent(),
-            ChatroomManagerComponent(),
+            # Redis and Registry must come before handler and listener
+            # due to a bug in the DI.  Singleton dependencies of other
+            # singletons are not cached properly.
+            RedisComponent(),
+            ChatroomRegistryComponent(),
+            ChatHandlerFactoryComponent(),
+            ChatroomListenerComponent(),
             CurrentAccountComponent(),
             PasswordHasherComponent(),
-            RedisComponent(),
             SQLAlchemyEngineComponent(),
             SQLAlchemySessionComponent(),
             SessionComponent(cookie_store),
