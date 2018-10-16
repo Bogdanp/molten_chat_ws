@@ -1,3 +1,7 @@
+import base64
+from typing import Optional
+
+from molten import Header
 from molten.contrib.sessions import Session
 from molten.contrib.sqlalchemy import Session as DBSession
 from molten.typing import extract_optional_annotation
@@ -36,7 +40,7 @@ class AccountManager(Manager):
             account = Account(username=username)
             account.password_hash = self.password_hasher.hash(password)
             self.session.add(account)
-            self.session.flush()
+            self.session.commit()
             return account
         except IntegrityError:
             raise UsernameTaken()
@@ -74,7 +78,12 @@ class CurrentAccountComponent:
         _, annotation = extract_optional_annotation(parameter.annotation)
         return annotation is Account
 
-    def resolve(self, account_manager: AccountManager, session: Session):
+    def resolve(self, account_manager: AccountManager, authorization: Optional[Header], session: Session):
+        if authorization is not None:
+            sequence = authorization[len("Basic "):]
+            username, _, password = base64.urlsafe_b64decode(sequence).decode().partition(":")
+            return account_manager.find_by_username_and_password(username, password)
+
         account_id = session.get("account_id")
         if not account_id:
             return None

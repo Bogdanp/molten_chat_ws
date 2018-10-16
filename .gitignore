@@ -1,5 +1,7 @@
 .cache
+.coverage
 __pycache__
 dump.rdb
+htmlcov
 node_modules
 static

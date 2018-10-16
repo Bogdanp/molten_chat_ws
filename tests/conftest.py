@@ -1,8 +1,15 @@
-import pytest
+import gevent.monkey; gevent.monkey.patch_all()  # noqa isort: ignore
 
+import base64
+
+import pytest
 from molten import testing
 from molten.contrib.sqlalchemy import Session
+from molten.contrib.websockets import WebsocketsTestClient
+
 from chat.app import setup_app
+from chat.components.accounts import AccountManager
+from chat.components.redis import Redis
 
 
 def truncate_all_tables(session: Session):
@@ -16,6 +23,10 @@ def truncate_all_tables(session: Session):
         # "truncate" can deadlock so we use delete which is guaranteed not to.
         session.execute(f"delete from {table_name}")
     session.commit()
+
+
+def flush_redis(redis: Redis):
+    redis.flushall()
 
 
 @pytest.fixture(scope="session")
@@ -33,11 +44,17 @@ def app(app_global):
     yield app_global
     resolver = app_global.injector.get_resolver()
     resolver.resolve(truncate_all_tables)()
+    resolver.resolve(flush_redis)()
 
 
 @pytest.fixture
 def client(app):
     return testing.TestClient(app)
+
+
+@pytest.fixture
+def client_ws(app):
+    return WebsocketsTestClient(app)
 
 
 @pytest.fixture
@@ -47,3 +64,33 @@ def load_component(app):
             return c
         return app.injector.get_resolver().resolve(loader)()
     return load
+
+
+@pytest.fixture
+def account(load_component):
+    account_manager = load_component(AccountManager)
+    return account_manager.create("jim.gordon", "bruceisbatman")
+
+
+@pytest.fixture
+def account_auth(account):
+    def auth(request):
+        sequence = base64.urlsafe_b64encode(b"jim.gordon:bruceisbatman")
+        request.headers["Authorization"] = f"Basic {sequence.decode()}"
+        return request
+    return auth
+
+
+@pytest.fixture
+def alt_account(load_component):
+    account_manager = load_component(AccountManager)
+    return account_manager.create("bruce.wayne", "jimisclueless")
+
+
+@pytest.fixture
+def alt_account_auth(alt_account):
+    def auth(request):
+        sequence = base64.urlsafe_b64encode(b"bruce.wayne:jimisclueless")
+        request.headers["Authorization"] = f"Basic {sequence.decode()}"
+        return request
+    return auth

@@ -49,7 +49,7 @@ class ChatroomRegistry:
             room_names = list(self.rooms_by_socket[socket])
             for room_name in room_names:
                 try:
-                    del self.sockets_by_room[socket]
+                    del self.sockets_by_room[room_name][socket]
                 except KeyError:
                     continue
 
